@@ -6,12 +6,10 @@ import java.nio.file.Path;
 
 public class TrajectoryFile {
     private String path;
-    private String format;
     private String content;
 
-    public TrajectoryFile(String path/*, String format*/, String content) {
+    public TrajectoryFile(String path, String content) {
         this.path = path;
-        //this.format = format;
         this.content = content;
     }
 

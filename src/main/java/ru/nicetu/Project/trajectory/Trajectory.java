@@ -1,11 +1,11 @@
 package ru.nicetu.Project.trajectory;
 
 
+import java.nio.file.NoSuchFileException;
 import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import ru.nicetu.Project.trajectory.TrajectoryFile;
 
 public class Trajectory {
     private List<ArrayList<Double>> points;
@@ -44,22 +44,34 @@ public class Trajectory {
                 '}';
     }
 
-    public static Trajectory fromFile(String filePath) throws IOException {
-        String content = new String(Files.readAllBytes(Paths.get(filePath)));
-        String[] lines = content.trim().split("\\R+");
-        List<ArrayList<Double>> points = new ArrayList<>();
-
-        for (String line : lines) {
-            String[] data = line.trim().split("\\s+");
-            ArrayList<Double> point = new ArrayList<>();
-            for (String value : data) {
-                point.add(Double.parseDouble(value));
+     public static Trajectory fromFile(String filePath, String fileFormat) throws IOException {
+        try {
+            if (!Files.exists(Paths.get(filePath))) {
+                throw new NoSuchFileException("File not found: " + filePath);
             }
-            points.add(point);
-        }
 
-        TrajectoryFile fileInfo = new TrajectoryFile(filePath, content);
-        return new Trajectory(points,fileInfo);
+            String content = new String(Files.readAllBytes(Paths.get(filePath)));
+            String[] lines = content.trim().split("\\R+");
+            List<ArrayList<Double>> points = new ArrayList<>();
+
+            for (String line : lines) {
+                String[] data = line.trim().split("\\s+");
+                ArrayList<Double> point = new ArrayList<>();
+                for (String value : data) {
+                    point.add(Double.parseDouble(value));
+                }
+                points.add(point);
+            }
+
+            TrajectoryFile fileInfo = new TrajectoryFile(filePath, content);
+            return new Trajectory(points, fileInfo);
+        } catch (NoSuchFileException e) {
+            System.err.println("File not found: " + filePath);
+            throw e;
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading the file: " + filePath);
+            throw e;
+        }
     }
 
     public String getFileName() {
