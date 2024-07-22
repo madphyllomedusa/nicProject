@@ -6,20 +6,21 @@ import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
 public class Trajectory {
     private List<ArrayList<Double>> points;
-    private TrajectoryFile fileInfo;
+    private final String path;
 
-    public Trajectory(List<ArrayList<Double>> points, TrajectoryFile fileInfo) {
+    public Trajectory(List<ArrayList<Double>> points, String path) {
         this.points = points;
-        this.fileInfo = fileInfo;
+        this.path = path;
     }
 
 
-    public ArrayList<Double> getPointByTime(double time) {
+    public ArrayList<Double> getPointBySecond(double second) {
         for (ArrayList<Double> point : points) {
-            if (time == point.get(0)) {
+            if (second == point.get(0)) {
                 return point;
             }
         }
@@ -31,20 +32,12 @@ public class Trajectory {
     }
 
     public void printAll() {
-        System.out.println("Trajectory: " + fileInfo);
         for (ArrayList<Double> point : points) {
             System.out.println(point);
         }
     }
 
-    public String toString() {
-        return "Trajectory{" +
-                "pointsCount=" + points.size() +
-                ", fileInfo=" + fileInfo +
-                '}';
-    }
-
-     public static Trajectory fromFile(String filePath, String fileFormat) throws IOException {
+     public static Trajectory fromFile(String filePath) throws IOException {
         try {
             if (!Files.exists(Paths.get(filePath))) {
                 throw new NoSuchFileException("File not found: " + filePath);
@@ -63,8 +56,8 @@ public class Trajectory {
                 points.add(point);
             }
 
-            TrajectoryFile fileInfo = new TrajectoryFile(filePath, content);
-            return new Trajectory(points, fileInfo);
+
+            return new Trajectory(points, filePath);
         } catch (NoSuchFileException e) {
             System.err.println("File not found: " + filePath);
             throw e;
@@ -75,12 +68,27 @@ public class Trajectory {
     }
 
     public String getFileName() {
-        String fileName = fileInfo.getName();
-        return fileName;
+        return Paths.get(path)
+                .getFileName()
+                .toString();
     }
     public String getFileFormat(){
-        String fileFormat = fileInfo.getFormat();
-        return fileFormat;
+        int dotIndex = path.lastIndexOf('.');
+        String extension = (dotIndex == -1) ? "" : path.substring(dotIndex);
+        return extension;
+    }
+    public String getPath() {
+        return path;
+    }
+
+    @Override
+    public String toString() {
+        return "Trajectory{\n" +
+                "pointsCount=" + points.size() +"\n"+
+                "File path = " + getPath() + "\n"+
+                "File name = " + getFileName() +"\n"+
+                "File format = " + getFileFormat() +"\n"+
+                '}';
     }
 }
 

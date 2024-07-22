@@ -2,7 +2,6 @@ package ru.nicetu.Project;
 
 import java.io.IOException;
 import ru.nicetu.Project.trajectory.Trajectory;
-import ru.nicetu.Project.trajectory.TrajectoryFile;
 
 public class Main {
     public static void main(String[] args) {
