@@ -12,6 +12,8 @@ public class Trajectory {
     private List<ArrayList<Double>> points;
     private final String path;
 
+    private static Logger logger = Logger.getLogger(Trajectory.class.getName());
+
     public Trajectory(List<ArrayList<Double>> points, String path) {
         this.points = points;
         this.path = path;
@@ -33,7 +35,8 @@ public class Trajectory {
 
     public void printAll() {
         for (ArrayList<Double> point : points) {
-            System.out.println(point);
+            //System.out.println(point);
+            logger.info("print some point:" + point);
         }
     }
 
