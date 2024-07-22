@@ -1,14 +1,13 @@
 package ru.nicetu.Project.trajectory;
 
-import ru.nicetu.Project.interfaces.InterfaceTrajectory;
 
+import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import ru.nicetu.Project.trajectory.TrajectoryFile;
 
-public class Trajectory implements InterfaceTrajectory {
+public class Trajectory {
     private List<ArrayList<Double>> points;
     private TrajectoryFile fileInfo;
 
@@ -17,7 +16,7 @@ public class Trajectory implements InterfaceTrajectory {
         this.fileInfo = fileInfo;
     }
 
-    @Override
+
     public ArrayList<Double> getPointByTime(double time) {
         for (ArrayList<Double> point : points) {
             if (time == point.get(0)) {
@@ -27,29 +26,49 @@ public class Trajectory implements InterfaceTrajectory {
         return null;
     }
 
-    @Override
     public List<ArrayList<Double>> getAll() {
         return points;
     }
 
-    @Override
     public void printAll() {
         System.out.println("Trajectory: " + fileInfo);
         for (ArrayList<Double> point : points) {
             System.out.println(point);
         }
     }
-    @Override
-    public String toString(){
+
+    public String toString() {
         return "Trajectory{" +
-                "points=" + points.size() + " points" +
+                "pointsCount=" + points.size() +
                 ", fileInfo=" + fileInfo +
                 '}';
     }
 
-//    public static Trajectory fromFile(String filePath) throws IOException {
-//        //todo
-//        List<ArrayList<Double>> points = new ArrayList<>();
-//        return new Trajectory(points);
-//    }
+    public static Trajectory fromFile(String filePath) throws IOException {
+        String content = new String(Files.readAllBytes(Paths.get(filePath)));
+        String[] lines = content.trim().split("\\R+");
+        List<ArrayList<Double>> points = new ArrayList<>();
+
+        for (String line : lines) {
+            String[] data = line.trim().split("\\s+");
+            ArrayList<Double> point = new ArrayList<>();
+            for (String value : data) {
+                point.add(Double.parseDouble(value));
+            }
+            points.add(point);
+        }
+
+        TrajectoryFile fileInfo = new TrajectoryFile(filePath, content);
+        return new Trajectory(points,fileInfo);
+    }
+
+    public String getFileName() {
+        String fileName = fileInfo.getName();
+        return fileName;
+    }
+    public String getFileFormat(){
+        String fileFormat = fileInfo.getFormat();
+        return fileFormat;
+    }
 }
+
