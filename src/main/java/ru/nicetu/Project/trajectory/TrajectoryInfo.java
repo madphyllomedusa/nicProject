@@ -82,7 +82,6 @@ public class TrajectoryInfo implements InterfaceTInfo {
             if (i >= trajectory.getPointsCount()){
                 throw new RuntimeException();
             }
-
         }
         catch (Exception e) {
             logger.warning("Something went wrong when getting the points by second: " + second);
