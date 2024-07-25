@@ -7,8 +7,8 @@ import ru.nicetu.Project.trajectory.TrajectoryInfo;
 
 public class Main {
     public static void main(String[] args) {
-        String filePath = "/Users/matthewphyllomedusa/Downloads/traject1.txt";
-        double searchTime = 10.0;
+        final String filePath = "C:\\Users\\mpasechnik\\Downloads\\traject2.txt";
+        double searchTime = 23;
 
         try {
             TrajectoryInfo trajectory = TrajectoryInfo.fromFile(filePath);
