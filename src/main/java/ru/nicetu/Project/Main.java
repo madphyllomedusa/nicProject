@@ -1,24 +1,37 @@
 package ru.nicetu.Project;
 
 import java.io.IOException;
-import ru.nicetu.Project.trajectory.Trajectory;
-import ru.nicetu.Project.trajectory.TrajectoryFile;
+
+import ru.nicetu.Project.dataClass.Point;
+import ru.nicetu.Project.trajectory.TrajectoryInfo;
 
 public class Main {
     public static void main(String[] args) {
-        String filePath = "/Users/matthewphyllomedusa/Downloads/traject1.txt";
+        final String filePath = "src/traject1.txt";
+        double searchTime = 23;
 
         try {
-            Trajectory trajectory = Trajectory.fromFile(filePath);
-            System.out.println("Все точки траектории:");
-            trajectory.printAll();
-            System.out.println("_________________\n");
+            TrajectoryInfo trajectory = TrajectoryInfo.fromFile(filePath);
             System.out.println(trajectory.toString());
-            System.out.println(trajectory.getFileName());
-            System.out.println(trajectory.getFileFormat());
+
+
+            System.out.println("Все точки и их координаты:");
+            for (Point point : trajectory.getTrajectory().getPoints()) {
+                System.out.println(point);
+            }
+
+            if (trajectory.getPointBySecond(searchTime) != null) {
+                System.out.println("Значение траектории в точке "+ searchTime +
+                        ":\n" +trajectory.getPointBySecond(searchTime).toString());
+            }
+            else {
+                System.out.println("Точка траектории в момент времени "
+                        + searchTime + " не найдена.");
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }
