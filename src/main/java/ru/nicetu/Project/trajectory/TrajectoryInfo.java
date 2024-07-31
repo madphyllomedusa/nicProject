@@ -18,7 +18,7 @@ public class TrajectoryInfo implements InterfaceTInfo {
 
 
     private Trajectory trajectory;
-    private Path trajectoryPath;
+    private final Path trajectoryPath;
 
     public TrajectoryInfo(Trajectory trajectory, Path trajectoryPath) {
         this.trajectory = trajectory;
@@ -29,11 +29,11 @@ public class TrajectoryInfo implements InterfaceTInfo {
     public static TrajectoryInfo fromFile(String filePath) throws IOException {
         try {
             Path path = Paths.get(filePath);
-            if (!Files.exists(Paths.get(filePath))) {
+            if (!Files.exists(path)) {
                 throw new NoSuchFileException("File not found: " + filePath);
             }
 
-            String content = new String(Files.readAllBytes(Paths.get(filePath)));
+            String content = new String(Files.readAllBytes(path));
             String[] lines = content.trim().split("\\R+");
 
             List<Point> trajectory = new ArrayList<>();

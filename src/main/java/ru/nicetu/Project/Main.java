@@ -7,7 +7,7 @@ import ru.nicetu.Project.trajectory.TrajectoryInfo;
 
 public class Main {
     public static void main(String[] args) {
-        final String filePath = "C:\\Users\\mpasechnik\\Downloads\\traject2.txt";
+        final String filePath = "src/traject1.txt";
         double searchTime = 23;
 
         try {

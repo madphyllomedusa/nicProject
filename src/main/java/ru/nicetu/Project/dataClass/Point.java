@@ -3,7 +3,7 @@ package ru.nicetu.Project.dataClass;
 import java.util.List;
 
 public class Point {
-    private List<Double> point;
+    private final List<Double> point;
 
     public Point(List<Double> point) {
         this.point = point;
